@@ -12,7 +12,11 @@ function newQuote() {
 
 function setTextAndAuthor(newQuote) {
   quoteText.textContent = newQuote.text;
-  quoteAuthor.textContent = newQuote.author;
+  if (newQuote.author !== null) {
+    quoteAuthor.textContent = newQuote.author;
+  } else {
+    quoteAuthor.textContent = "Anonymous";
+  }
 }
 
 // get quotes from API
@@ -31,3 +35,7 @@ getQuotes();
 newQuoteButton.addEventListener("click", () => {
   setTextAndAuthor(newQuote());
 });
+
+setInterval(() => {
+  setTextAndAuthor(newQuote());
+}, 20000);
