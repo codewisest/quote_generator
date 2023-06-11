@@ -11,6 +11,11 @@ function newQuote() {
 }
 
 function setTextAndAuthor(newQuote) {
+  if (newQuote.text.length > 100) {
+    quoteText.classList.add("long_quote");
+  } else {
+    quoteText.classList.remove("long_quote");
+  }
   quoteText.textContent = newQuote.text;
   if (newQuote.author !== null) {
     quoteAuthor.textContent = newQuote.author;
