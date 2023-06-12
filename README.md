@@ -21,4 +21,4 @@ I plan to add more features like
 + Option to allow user go to a random particular quote number
 
 ### Improvements
-In the far future i will incoporate server-side concept for some advanced function
+In the far future i will incoporate server-side concept for some advanced functions
