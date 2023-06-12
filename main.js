@@ -3,11 +3,20 @@ const quoteText = document.getElementById("quote");
 const quoteAuthor = document.getElementById("author");
 const newQuoteButton = document.getElementById("new_quote");
 const twitterButton = document.getElementById("twitter");
-
+const quoteNumberDOM = document.querySelector(".quote_number");
+const quotesTotal = document.querySelector(".quotes_total");
+let quoteNumberRandom;
+// generate random number
+function generateRandomNumber() {
+  quoteNumberRandom = Math.floor(Math.random() * apiQuotes.length);
+  return quoteNumberRandom;
+}
 // get new quote
 function newQuote() {
   // pick random quote from api quotes array
-  const quote = apiQuotes[Math.floor(Math.random() * apiQuotes.length)];
+
+  const quote = apiQuotes[generateRandomNumber()];
+  setQuotesNumber();
   return quote;
 }
 
@@ -25,6 +34,14 @@ function setTextAndAuthor(newQuote) {
   }
 }
 
+function setQuotesNumber() {
+  quoteNumberDOM.textContent = quoteNumberRandom;
+}
+
+function showTotalQuotes() {
+  quotesTotal.textContent = apiQuotes.length;
+}
+
 // get quotes from API
 const getQuotes = async () => {
   const apiUrl = "https://type.fit/api/quotes";
@@ -32,6 +49,8 @@ const getQuotes = async () => {
     const response = await fetch(apiUrl);
     apiQuotes = await response.json();
     setTextAndAuthor(newQuote());
+    setQuotesNumber();
+    showTotalQuotes();
   } catch (error) {}
 };
 
