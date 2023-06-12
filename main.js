@@ -64,10 +64,16 @@ getQuotes();
 
 newQuoteButton.addEventListener("click", () => {
   setTextAndAuthor(newQuote());
+  autoNewQuote();
 });
 
 twitterButton.addEventListener("click", tweetQuote);
 
-setInterval(() => {
-  setTextAndAuthor(newQuote());
-}, 20000);
+// control timing for new quote
+let quoteTimer;
+function autoNewQuote() {
+  clearInterval(quoteTimer);
+  quoteTimer = setInterval(() => {
+    setTextAndAuthor(newQuote());
+  }, 20000);
+}
