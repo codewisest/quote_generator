@@ -18,6 +18,7 @@ function newQuote(quoteNumber) {
   // pick random quote from api quotes array
   const quote = apiQuotes[Number(quoteNumber)];
   setQuotesNumber();
+  autoNewQuote();
   return quote;
 }
 
@@ -78,7 +79,6 @@ newQuoteButton.addEventListener("click", () => {
   const randomQuoteNumber = generateRandomNumber();
   // newQuote(randomQuoteNumber);
   setTextAndAuthor(newQuote(randomQuoteNumber));
-  autoNewQuote();
 });
 
 twitterButton.addEventListener("click", tweetQuote);
@@ -91,8 +91,9 @@ nextQuoteButton.addEventListener("click", () => {
 // control timing for new quote
 let quoteTimer;
 function autoNewQuote() {
+  const quoteNumber = generateRandomNumber();
   clearInterval(quoteTimer);
   quoteTimer = setInterval(() => {
-    setTextAndAuthor(newQuote());
-  }, 20000);
+    setTextAndAuthor(newQuote(quoteNumber));
+  }, 15000);
 }
