@@ -14,14 +14,6 @@ function generateRandomNumber() {
   quoteNumberRandom = Math.floor(Math.random() * apiQuotes.length);
   return quoteNumberRandom;
 }
-// get new quote
-// function newQuote(quoteNumber) {
-//   // pick random quote from api quotes array
-//   const quote = apiQuotes[Number(quoteNumber)];
-//   setQuotesNumber();
-//   autoNewQuote();
-//   return quote;
-// }
 
 function setTextAndAuthor(quoteNumber) {
   const quote = apiQuotes[Number(quoteNumber)];
@@ -38,10 +30,10 @@ function setTextAndAuthor(quoteNumber) {
     quoteAuthor.textContent = "Anonymous";
   }
   previousQuoteTracker();
+
   setQuotesNumber();
   autoNewQuote();
   console.log(quoteNumberDOM.textContent);
-  console.log(trackPreviousNumber);
 }
 
 function setQuotesNumber() {
@@ -52,14 +44,9 @@ function showTotalQuotes() {
   quotesTotal.textContent = apiQuotes.length;
 }
 
-// function nextQuoteNumber() {
-//   return quoteNumber;
-// }
-
 function setNextQuotesNumber() {
   let quoteNumber = Number(quoteNumberDOM.textContent);
-  quoteNumber++;
-  setTextAndAuthor(quoteNumber);
+  setTextAndAuthor(quoteNumber++);
 
   quoteNumberDOM.textContent = quoteNumber;
 }
@@ -77,6 +64,7 @@ const getQuotes = async () => {
     const response = await fetch(apiUrl);
     apiQuotes = await response.json();
     setTextAndAuthor(generateRandomNumber());
+
     setQuotesNumber();
     showTotalQuotes();
   } catch (error) {}
