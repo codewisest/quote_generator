@@ -6,6 +6,7 @@ const twitterButton = document.getElementById("twitter");
 const quoteNumberDOM = document.querySelector(".quote_number");
 const quotesTotal = document.querySelector(".quotes_total");
 const nextQuoteButton = document.getElementById("next");
+const trackPreviousNumber = [];
 
 let quoteNumberRandom;
 // generate random number
@@ -14,26 +15,33 @@ function generateRandomNumber() {
   return quoteNumberRandom;
 }
 // get new quote
-function newQuote(quoteNumber) {
-  // pick random quote from api quotes array
-  const quote = apiQuotes[Number(quoteNumber)];
-  setQuotesNumber();
-  autoNewQuote();
-  return quote;
-}
+// function newQuote(quoteNumber) {
+//   // pick random quote from api quotes array
+//   const quote = apiQuotes[Number(quoteNumber)];
+//   setQuotesNumber();
+//   autoNewQuote();
+//   return quote;
+// }
 
-function setTextAndAuthor(newQuote) {
-  if (newQuote.text.length > 100) {
+function setTextAndAuthor(quoteNumber) {
+  const quote = apiQuotes[Number(quoteNumber)];
+
+  if (quote.text.length > 100) {
     quoteText.classList.add("long_quote");
   } else {
     quoteText.classList.remove("long_quote");
   }
-  quoteText.textContent = newQuote.text;
-  if (newQuote.author !== null) {
-    quoteAuthor.textContent = newQuote.author;
+  quoteText.textContent = quote.text;
+  if (quote.author !== null) {
+    quoteAuthor.textContent = quote.author;
   } else {
     quoteAuthor.textContent = "Anonymous";
   }
+  previousQuoteTracker();
+  setQuotesNumber();
+  autoNewQuote();
+  console.log(quoteNumberDOM.textContent);
+  console.log(trackPreviousNumber);
 }
 
 function setQuotesNumber() {
@@ -44,15 +52,22 @@ function showTotalQuotes() {
   quotesTotal.textContent = apiQuotes.length;
 }
 
-function nextQuoteNumber() {
-  let quoteNumber = Number(quoteNumberDOM.textContent);
-  setTextAndAuthor(newQuote(quoteNumber++));
-  console.log(quoteNumber);
-  return quoteNumber;
-}
+// function nextQuoteNumber() {
+//   return quoteNumber;
+// }
 
 function setNextQuotesNumber() {
-  quoteNumberDOM.textContent = nextQuoteNumber();
+  let quoteNumber = Number(quoteNumberDOM.textContent);
+  quoteNumber++;
+  setTextAndAuthor(quoteNumber);
+
+  quoteNumberDOM.textContent = quoteNumber;
+}
+
+function previousQuoteTracker() {
+  let quoteNumber = Number(quoteNumberDOM.textContent);
+  trackPreviousNumber.push(quoteNumber);
+  console.log(trackPreviousNumber);
 }
 
 // get quotes from API
@@ -61,7 +76,7 @@ const getQuotes = async () => {
   try {
     const response = await fetch(apiUrl);
     apiQuotes = await response.json();
-    setTextAndAuthor(newQuote(generateRandomNumber()));
+    setTextAndAuthor(generateRandomNumber());
     setQuotesNumber();
     showTotalQuotes();
   } catch (error) {}
@@ -75,10 +90,21 @@ function tweetQuote() {
 // On load
 getQuotes();
 
+// control timing for new quote
+let quoteTimer;
+function autoNewQuote() {
+  const quoteNumber = generateRandomNumber();
+  clearInterval(quoteTimer);
+  quoteTimer = setInterval(() => {
+    setTextAndAuthor(quoteNumber);
+  }, 15000);
+}
+
+// EVENT LISTENERS
 newQuoteButton.addEventListener("click", () => {
   const randomQuoteNumber = generateRandomNumber();
   // newQuote(randomQuoteNumber);
-  setTextAndAuthor(newQuote(randomQuoteNumber));
+  setTextAndAuthor(randomQuoteNumber);
 });
 
 twitterButton.addEventListener("click", tweetQuote);
@@ -87,13 +113,3 @@ nextQuoteButton.addEventListener("click", () => {
   const ans = setNextQuotesNumber();
   console.log(ans);
 });
-
-// control timing for new quote
-let quoteTimer;
-function autoNewQuote() {
-  const quoteNumber = generateRandomNumber();
-  clearInterval(quoteTimer);
-  quoteTimer = setInterval(() => {
-    setTextAndAuthor(newQuote(quoteNumber));
-  }, 15000);
-}
