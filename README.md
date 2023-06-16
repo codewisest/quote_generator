@@ -17,8 +17,7 @@ The description above are the features covered in the tutorial. However, as a us
 ### Additional features
 I plan to add more features like
 + Next and previous quote functions
-+ Option to allow user set how quotes should be displayed (orderly/Randomly)
-+ Option to allow user go to a random particular quote number
++ Option to allow user go to a particular quote number
 
 ### Improvements
 In the far future i will incoporate server-side concept for some advanced functions
