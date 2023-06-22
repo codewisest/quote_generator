@@ -7,6 +7,8 @@ const quoteNumberDOM = document.querySelector(".quote_number");
 const quotesTotal = document.querySelector(".quotes_total");
 const nextQuoteButton = document.getElementById("next");
 const trackPreviousNumber = [];
+const goToButton = document.getElementById("go_to");
+const goToInput = document.getElementById("user_number");
 
 let quoteNumberRandom;
 // generate random number
@@ -100,4 +102,10 @@ twitterButton.addEventListener("click", tweetQuote);
 nextQuoteButton.addEventListener("click", () => {
   const ans = setNextQuotesNumber();
   console.log(ans);
+});
+
+goToButton.addEventListener("click", () => {
+  let goToNumber = Number(goToInput.value);
+  setTextAndAuthor(goToNumber);
+  quoteNumberDOM.textContent = goToNumber;
 });
