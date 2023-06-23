@@ -52,6 +52,8 @@ function setNextQuotesNumber() {
 
   quoteNumberDOM.textContent = quoteNumber;
   previousQuoteTracker();
+  previousQuoteButton.disabled = false;
+  previousQuoteButton.style.cursor = "pointer";
 }
 
 function setPreviousQuotesNumber() {
@@ -102,6 +104,8 @@ function autoNewQuote() {
   quoteTimer = setInterval(() => {
     setTextAndAuthor(quoteNumber);
     trackPreviousNumber.push(quoteNumber);
+    previousQuoteButton.disabled = false;
+    previousQuoteButton.style.cursor = "pointer";
   }, 15000);
 }
 
