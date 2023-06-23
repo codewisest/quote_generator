@@ -6,6 +6,7 @@ const twitterButton = document.getElementById("twitter");
 const quoteNumberDOM = document.querySelector(".quote_number");
 const quotesTotal = document.querySelector(".quotes_total");
 const nextQuoteButton = document.getElementById("next");
+const previousQuoteButton = document.getElementById("previous");
 const trackPreviousNumber = [];
 const goToButton = document.getElementById("go_to");
 const goToInput = document.getElementById("user_number");
@@ -31,7 +32,6 @@ function setTextAndAuthor(quoteNumber) {
   } else {
     quoteAuthor.textContent = "Anonymous";
   }
-  previousQuoteTracker();
 
   setQuotesNumber();
   autoNewQuote();
@@ -51,6 +51,20 @@ function setNextQuotesNumber() {
   setTextAndAuthor(quoteNumber++);
 
   quoteNumberDOM.textContent = quoteNumber;
+  previousQuoteTracker();
+}
+
+function setPreviousQuotesNumber() {
+  let quoteNumber = trackPreviousNumber[trackPreviousNumber.length - 2];
+  console.log(quoteNumber);
+  setTextAndAuthor(quoteNumber);
+  trackPreviousNumber.pop();
+  if (trackPreviousNumber.length < 2) {
+    previousQuoteButton.disabled = true;
+    previousQuoteButton.style.cursor = "not-allowed";
+  }
+  console.log(trackPreviousNumber.length);
+  quoteNumberDOM.textContent = quoteNumber;
 }
 
 function previousQuoteTracker() {
@@ -66,7 +80,7 @@ const getQuotes = async () => {
     const response = await fetch(apiUrl);
     apiQuotes = await response.json();
     setTextAndAuthor(generateRandomNumber());
-
+    trackPreviousNumber.push(Number(quoteNumberDOM.textContent));
     setQuotesNumber();
     showTotalQuotes();
   } catch (error) {}
@@ -87,6 +101,7 @@ function autoNewQuote() {
   clearInterval(quoteTimer);
   quoteTimer = setInterval(() => {
     setTextAndAuthor(quoteNumber);
+    trackPreviousNumber.push(quoteNumber);
   }, 15000);
 }
 
@@ -95,6 +110,7 @@ newQuoteButton.addEventListener("click", () => {
   const randomQuoteNumber = generateRandomNumber();
   // newQuote(randomQuoteNumber);
   setTextAndAuthor(randomQuoteNumber);
+  previousQuoteTracker();
 });
 
 twitterButton.addEventListener("click", tweetQuote);
@@ -108,4 +124,8 @@ goToButton.addEventListener("click", () => {
   let goToNumber = Number(goToInput.value);
   setTextAndAuthor(goToNumber);
   quoteNumberDOM.textContent = goToNumber;
+});
+
+previousQuoteButton.addEventListener("click", () => {
+  setPreviousQuotesNumber();
 });
